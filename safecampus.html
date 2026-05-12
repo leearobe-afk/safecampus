@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeCampus - Campus Safety Reporting Platform</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="#home" class="logo">
+        <div class="logo-icon">S</div>
+        Safe<span>Campus</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#report">Report</a></li>
+        <li><a href="#tips">Safety Tips</a></li>
+        <li><a href="#emergency">Emergency</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+      </ul>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">&#9776;</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home">Home</a>
+      <a href="#report">Report</a>
+      <a href="#tips">Safety Tips</a>
+      <a href="#emergency">Emergency</a>
+      <a href="#dashboard">Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-badge">&#128737; Campus Safety Platform</div>
+      <h1>Your Safety,<br><span class="highlight">Our Priority</span></h1>
+      <p>Report incidents, access safety resources, and stay informed about campus safety. Together, we create a safer environment for everyone.</p>
+      <div class="hero-buttons">
+        <a href="#report" class="btn btn-primary">&#9888; Report an Incident</a>
+        <a href="#emergency" class="btn btn-outline">&#128222; Emergency Contacts</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">24/7</div>
+          <div class="hero-stat-label">Monitoring</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">Real-time</div>
+          <div class="hero-stat-label">Updates
+          </div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">Fast</div>
+          <div class="hero-stat-label">Response</div>
+        </div>
+      </div>
+    </div>
+    <button class="scroll-indicator" onclick="document.getElementById('report').scrollIntoView({behavior:'smooth'})" aria-label="Scroll down">&#8595;</button>
+  </section>
+
+  <!-- REPORT FORM -->
+  <section class="section section-alt" id="report">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-badge badge-rose">&#9888; Incident Report</div>
+        <h2 class="section-title">Report an Incident</h2>
+        <p class="section-desc">Help keep our campus safe. All reports can be submitted anonymously and are reviewed by campus security.</p>
+      </div>
+
+      <div class="form-card" id="formCard">
+        <div id="formContent">
+          <div class="disclaimer">
+            <span class="disclaimer-icon">&#9888;</span>
+            <div class="disclaimer-text"><strong>Important:</strong> Filing a false incident report is a serious offense and may result in disciplinary action, including suspension or legal consequences. Only submit genuine reports to help keep our campus safe. All reports are reviewed by campus security before any action is taken.</div>
+          </div>
+          <div id="formError" class="form-error" style="display:none;"></div>
+
+          <div class="form-group">
+            <label class="form-label">Incident Title *</label>
+            <input type="text" class="form-input" id="incTitle" placeholder="Brief description of the incident" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Detailed Description *</label>
+            <textarea class="form-textarea" id="incDesc" placeholder="Describe what happened, when, and any relevant details..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">&#127991; Category *</label>
+            <div class="btn-group" id="categoryGroup">
+              <button class="btn-option" data-value="theft">Theft</button>
+              <button class="btn-option" data-value="harassment">Harassment</button>
+              <button class="btn-option" data-value="hazard">Safety Hazard</button>
+              <button class="btn-option" data-value="vandalism">Vandalism</button>
+              <button class="btn-option active" data-value="other">Other</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">&#128205; Location *</label>
+            <select class="form-select" id="incLocation">
+              <option value="">Select a location</option>
+              <option value="Main Library">STEER Hub (Science, Technology, Engineering, and Environment Research Hub)</option>
+              <option value="Student Center">Ceafa Bldg (College of Engineering, Architecture, and Fine Arts)</option>
+              <option value="Science Building">CET Bldg (College of Engineering Technology)</option>
+              <option value="Dormitory A">CICS Bldg (College of Informatics and Computing Sciences)</option>
+              <option value="Dormitory B">University Canteen</option>
+              <option value="Parking Lot - North">Parking Lot - North</option>
+              <option value="Parking Lot - South">Parking Lot - South</option>
+              <option value="Athletic Field">FDC (Fitness Development Center)</option>
+              <option value="Cafeteria">KIST Park</option>
+              <option value="Computer Lab">FIC (Food Innovation Center)</option>
+              <option value="Admin Building">Admin Building</option>
+              <option value="Campus Walkway">Campus Walkway</option>
+              <option value="Other">Other</option>
+            </select>
+            <input type="text" class="form-input" id="incCustomLoc" placeholder="Please specify the location" style="display:none; margin-top:8px;" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">&#9201; Urgency Level *</label>
+            <div class="urgency-group" id="urgencyGroup">
+              <button class="urgency-btn" data-value="low">
+                <div class="urgency-label">Low</div>
+                <div class="urgency-desc">Minor concern, no immediate danger</div>
+              </button>
+              <button class="urgency-btn active-medium" data-value="medium">
+                <div class="urgency-label">Medium</div>
+                <div class="urgency-desc">Potential risk, needs attention</div>
+              </button>
+              <button class="urgency-btn" data-value="high">
+                <div class="urgency-label">High</div>
+                <div class="urgency-desc">Significant risk, prioritize</div>
+              </button>
+              <button class="urgency-btn" data-value="critical">
+                <div class="urgency-label">Critical</div>
+                <div class="urgency-desc">Immediate danger, urgent response</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">&#128100; Your Name *</label>
+            <input type="text" class="form-input" id="repName" placeholder="Full name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-input" id="repEmail" placeholder="your.email@campus.edu" />
+          </div>
+
+          <button class="submit-btn" id="submitBtn">&#10148; Submit Report</button>
+        </div>
+
+        <div id="formSuccess" class="form-success" style="display:none;">
+          <div class="form-success-icon">&#10003;</div>
+          <h3>Report Submitted</h3>
+          <p>Your incident report has been submitted successfully. Our team will review it promptly.</p>
+          <button class="btn btn-primary" onclick="resetForm()">Submit Another Report</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY TIPS -->
+  <section class="section" id="tips">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-badge badge-teal">&#128737; Stay Informed</div>
+        <h2 class="section-title">Safety Tips</h2>
+        <p class="section-desc">Practical advice to help you stay safe on and off campus.</p>
+      </div>
+
+      <div class="tips-grid" id="tipsGrid">
+        <!-- Tips loaded by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY CONTACTS -->
+  <section class="section section-alt" id="emergency">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-badge badge-rose">&#128222; Quick Access</div>
+        <h2 class="section-title">Emergency Contacts</h2>
+        <p class="section-desc">Save these numbers in your phone. In an emergency, every second counts.</p>
+      </div>
+
+      <div class="contacts-grid" id="contactsGrid">
+        <!-- Contacts loaded by JavaScript -->
+      </div>
+
+      <div class="emergency-banner">
+        <div class="emergency-banner-icon">&#128680;</div>
+        <h3>In Immediate Danger?</h3>
+        <p>Call 911 immediately. Do not wait -- your safety comes first.</p>
+        <a href="tel:911" class="emergency-call-btn">&#128222; Call 911</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="section" id="dashboard">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-badge badge-sky">&#128202; Analytics</div>
+        <h2 class="section-title">Safety Dashboard</h2>
+        <p class="section-desc">Real-time overview of campus safety data. Track incidents, trends, and response progress.</p>
+      </div>
+
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card stat-card-teal">
+          <div class="stat-icon stat-icon-teal">&#128737;</div>
+          <div class="stat-label">Total Reports</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card stat-card-amber">
+          <div class="stat-icon stat-icon-amber">&#128200;</div>
+          <div class="stat-label">Pending</div>
+          <div class="stat-value" id="statPending">0</div>
+        </div>
+        <div class="stat-card stat-card-green">
+          <div class="stat-icon stat-icon-green">&#10003;</div>
+          <div class="stat-label">Resolved</div>
+          <div class="stat-value" id="statResolved">0</div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <div class="recent-title">Recent Reports</div>
+        <div id="recentList">
+          <div class="recent-empty">No incidents have been reported yet. Be the first to help keep campus safe.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ADMIN PANEL -->
+  <section class="section section-alt" id="adminPanel" style="display:none;">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-badge badge-sky">🔐 Admin Access</div>
+        <h2 class="section-title">Admin Dashboard</h2>
+        <p class="section-desc">Manage and update incident reports. Only authorized personnel have access.</p>
+      </div>
+
+      <div class="form-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <select id="adminFilterStatus" class="form-select" style="width:auto;">
+              <option value="all">All Status</option>
+              <option value="reported">Reported</option>
+              <option value="investigating">Investigating</option>
+              <option value="resolved">Resolved</option>
+            </select>
+            <input type="text" id="adminSearch" class="form-input" placeholder="Search by title, reporter, or location..." style="width:250px;">
+          </div>
+          <button onclick="adminLogout()" class="btn btn-outline" style="background:#fff1f2; color:#e11d48;">🚪 Logout</button>
+        </div>
+
+        <div id="adminReportsList">
+          <!-- Reports will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Login Button (visible when not logged in) -->
+  <div style="position:fixed; bottom:20px; right:20px; z-index:999;">
+    <button id="adminLoginBtn" onclick="adminLogin()" style="background:#0d9488; color:white; border:none; border-radius:50px; padding:12px 20px; cursor:pointer; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+      🔑 Admin Login
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">
+          <div class="footer-logo-icon">S</div>
+          <div class="footer-logo-text">Safe<span>Campus</span></div>
+        </div>
+        <p class="footer-desc">A student-built platform dedicated to improving campus safety through community awareness and transparent incident reporting.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#report">Report Incident</a></li>
+          <li><a href="#tips">Safety Tips</a></li>
+          <li><a href="#emergency">Emergency Contacts</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contact</div>
+        <a href="mailto:safecampus@campus.edu" class="footer-contact-item">&#9993; safecampus@campus.edu</a>
+        <a href="#" class="footer-contact-item">&#128187; GitHub Repository</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 SafeCampus. Built with HTML, CSS, and JavaScript.</div>
+      <div class="footer-made">Made with <span class="footer-heart">&#10084;</span> for campus safety</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
