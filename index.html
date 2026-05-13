@@ -8,7 +8,6 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="navbar-inner">
       <a href="#home" class="logo">
@@ -33,7 +32,6 @@
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero" id="home">
     <div class="hero-content">
       <div class="hero-badge">&#128737; Campus Safety Platform</div>
@@ -45,13 +43,12 @@
       </div>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="hero-stat-value">24/7</div>
-          <div class="hero-stat-label">Monitoring</div>
+          <div class="hero-stat-value">Privacy</div>
+          <div class="hero-stat-label">Guaranteed</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-value">Real-time</div>
-          <div class="hero-stat-label">Updates
-          </div>
+          <div class="hero-stat-value">24/7</div>
+          <div class="hero-stat-label">Monitoring</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-value">Fast</div>
@@ -62,13 +59,12 @@
     <button class="scroll-indicator" onclick="document.getElementById('report').scrollIntoView({behavior:'smooth'})" aria-label="Scroll down">&#8595;</button>
   </section>
 
-  <!-- REPORT FORM -->
   <section class="section section-alt" id="report">
     <div class="section-inner">
       <div class="section-header">
         <div class="section-badge badge-rose">&#9888; Incident Report</div>
         <h2 class="section-title">Report an Incident</h2>
-        <p class="section-desc">Help keep our campus safe. All reports can be submitted anonymously and are reviewed by campus security.</p>
+        <p class="section-desc">Report incidents, access safety resources, and stay informed about campus safety. Together, we create a safer environment for everyone.</p>
       </div>
 
       <div class="form-card" id="formCard">
@@ -165,7 +161,6 @@
     </div>
   </section>
 
-  <!-- SAFETY TIPS -->
   <section class="section" id="tips">
     <div class="section-inner">
       <div class="section-header">
@@ -175,12 +170,10 @@
       </div>
 
       <div class="tips-grid" id="tipsGrid">
-        <!-- Tips loaded by JavaScript -->
       </div>
     </div>
   </section>
 
-  <!-- EMERGENCY CONTACTS -->
   <section class="section section-alt" id="emergency">
     <div class="section-inner">
       <div class="section-header">
@@ -190,7 +183,6 @@
       </div>
 
       <div class="contacts-grid" id="contactsGrid">
-        <!-- Contacts loaded by JavaScript -->
       </div>
 
       <div class="emergency-banner">
@@ -202,7 +194,6 @@
     </div>
   </section>
 
-  <!-- DASHBOARD -->
   <section class="section" id="dashboard">
     <div class="section-inner">
       <div class="section-header">
@@ -238,7 +229,6 @@
     </div>
   </section>
 
-    <!-- ADMIN PANEL -->
   <section class="section section-alt" id="adminPanel" style="display:none;">
     <div class="section-inner">
       <div class="section-header">
@@ -262,20 +252,17 @@
         </div>
 
         <div id="adminReportsList">
-          <!-- Reports will be loaded here -->
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Admin Login Button (visible when not logged in) -->
   <div style="position:fixed; bottom:20px; right:20px; z-index:999;">
     <button id="adminLoginBtn" onclick="adminLogin()" style="background:#0d9488; color:white; border:none; border-radius:50px; padding:12px 20px; cursor:pointer; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
       🔑 Admin Login
     </button>
   </div>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-inner">
       <div>
@@ -306,6 +293,8 @@
     </div>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
