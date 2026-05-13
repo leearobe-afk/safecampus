@@ -1,25 +1,10 @@
-var firebaseConfig = {
-  apiKey: "AIzaSyDqUk2OCIFaw1sn_QY47xLV0D_MD0aFjLM",
-  authDomain: "safecampus-81c3d.firebaseapp.com",
-  databaseURL: "https://safecampus-81c3d-default-rtdb.asia-southeast1.firebaseapp.com",
-  projectId: "safecampus-81c3d",
-  storageBucket: "safecampus-81c3d.firebasestorage.app",
-  messagingSenderId: "884629956826",
-  appId: "1:884629956826:web:c803deb4a35e9da2591de3",
-  measurementId: "G-YC0EZ8BG9D"
-};
-
-firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
-var incidentsRef = database.ref("incidents");
-
+var STORAGE_INCIDENTS = "safecampus_incidents";
 var STORAGE_ADMIN = "safecampus_admin_logged_in";
 
-var incidents = [];
+var incidents = JSON.parse(localStorage.getItem(STORAGE_INCIDENTS) || "[]");
 var selectedCategory = "other";
 var selectedUrgency = "medium";
 var isAdminLoggedIn = localStorage.getItem(STORAGE_ADMIN) === "true";
-var isLoading = true;
 
 const safetyTips = [
   { title: "Stay Aware", content: "Always be aware of your surroundings. Avoid distractions like headphones when walking alone at night.", category: "personal", icon: "👀" },
@@ -47,43 +32,8 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function loadIncidentsFromFirebase() {
-  incidentsRef.on("value", function(snapshot) {
-    var data = snapshot.val();
-    incidents = [];
-    if (data) {
-      var keys = Object.keys(data);
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var inc = data[key];
-        inc.firebaseId = key;
-        inc.id = parseInt(key) || Date.now();
-        incidents.push(inc);
-      }
-    }
-    renderDashboard();
-    renderAdminReports();
-    isLoading = false;
-  });
-}
-
-function saveIncidentToFirebase(incident) {
-  var newIncidentRef = incidentsRef.push();
-  incident.firebaseId = newIncidentRef.key;
-  newIncidentRef.set(incident);
-  showToast("Report submitted successfully!");
-}
-
-function updateReportStatusInFirebase(id, newStatus) {
-  incidentsRef.child(id).update({ status: newStatus });
-  showToast("Report status updated to: " + newStatus);
-}
-
-function deleteReportFromFirebase(id) {
-  if (confirm("Are you sure you want to delete this report? This action cannot be undone.")) {
-    incidentsRef.child(id).remove();
-    showToast("Report deleted successfully.");
-  }
+function saveIncidents() {
+  localStorage.setItem(STORAGE_INCIDENTS, JSON.stringify(incidents));
 }
 
 function validateUniversityEmail(email) {
@@ -154,6 +104,7 @@ if (submitBtn) {
     }
 
     var incident = {
+      id: Date.now(),
       title: title,
       description: desc,
       category: selectedCategory,
@@ -165,17 +116,13 @@ if (submitBtn) {
       created_at: new Date().toISOString()
     };
 
-    saveIncidentToFirebase(incident);
-
-    document.getElementById("incTitle").value = "";
-    document.getElementById("incDesc").value = "";
-    document.getElementById("incLocation").value = "";
-    document.getElementById("incCustomLoc").value = "";
-    document.getElementById("repName").value = "";
-    document.getElementById("repEmail").value = "";
+    incidents.push(incident);
+    saveIncidents();
 
     document.getElementById("formContent").style.display = "none";
     document.getElementById("formSuccess").style.display = "block";
+    renderDashboard();
+    renderAdminReports();
   });
 }
 
@@ -193,19 +140,10 @@ function showError(message) {
 }
 
 function resetForm() {
-  document.getElementById("formContent").style.display = "block";
-  document.getElementById("formSuccess").style.display = "none";
-  document.getElementById("incTitle").value = "";
-  document.getElementById("incDesc").value = "";
-  document.getElementById("incLocation").value = "";
-  document.getElementById("incCustomLoc").value = "";
-  document.getElementById("repName").value = "";
-  document.getElementById("repEmail").value = "";
+  location.reload();
 }
 
 function renderDashboard() {
-  if (isLoading) return;
-  
   var total = incidents.length;
   var resolved = incidents.filter(i => i.status === "resolved").length;
   var pending = total - resolved;
@@ -288,7 +226,7 @@ function renderAdminReports() {
     return;
   }
 
-  container.innerHTML = filtered.sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).map(inc => `
+  container.innerHTML = filtered.sort((a,b) => b.id - a.id).map(inc => `
     <div style="background:white; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:12px;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
         <div style="flex:1;">
@@ -301,12 +239,12 @@ function renderAdminReports() {
           </div>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
-          <select onchange="updateReportStatusInFirebase('${inc.firebaseId}', this.value)" style="padding:6px 10px; border-radius:8px; border:1px solid #e2e8f0; font-size:12px;">
+          <select onchange="updateReportStatus(${inc.id}, this.value)" style="padding:6px 10px; border-radius:8px; border:1px solid #e2e8f0; font-size:12px;">
             <option value="reported" ${inc.status === "reported" ? "selected" : ""}>📋 Reported</option>
             <option value="investigating" ${inc.status === "investigating" ? "selected" : ""}>🔍 Investigating</option>
             <option value="resolved" ${inc.status === "resolved" ? "selected" : ""}>✅ Resolved</option>
           </select>
-          <button onclick="deleteReportFromFirebase('${inc.firebaseId}')" style="background:#fff1f2; border:1px solid #fecdd3; border-radius:8px; padding:6px 12px; cursor:pointer; color:#e11d48;">🗑️ Delete</button>
+          <button onclick="deleteReport(${inc.id})" style="background:#fff1f2; border:1px solid #fecdd3; border-radius:8px; padding:6px 12px; cursor:pointer; color:#e11d48;">🗑️ Delete</button>
         </div>
       </div>
       
@@ -326,6 +264,27 @@ function renderAdminReports() {
       </div>
     </div>
   `).join("");
+}
+
+function updateReportStatus(id, newStatus) {
+  var incident = incidents.find(i => i.id === id);
+  if (incident) {
+    incident.status = newStatus;
+    saveIncidents();
+    renderDashboard();
+    renderAdminReports();
+    showToast("Report status updated to: " + newStatus);
+  }
+}
+
+function deleteReport(id) {
+  if (confirm("Are you sure you want to delete this report? This action cannot be undone.")) {
+    incidents = incidents.filter(i => i.id !== id);
+    saveIncidents();
+    renderDashboard();
+    renderAdminReports();
+    showToast("Report deleted successfully.");
+  }
 }
 
 function showToast(message) {
@@ -412,6 +371,24 @@ if (isAdminLoggedIn) {
   showAdminPanel();
 }
 
+function fixOldReports() {
+  var needsSave = false;
+  incidents.forEach(function(inc) {
+    if (!inc.reporterName) {
+      inc.reporterName = "Anonymous User";
+      needsSave = true;
+    }
+    if (!inc.reporterEmail) {
+      inc.reporterEmail = "anonymous@campus.edu";
+      needsSave = true;
+    }
+  });
+  if (needsSave) {
+    saveIncidents();
+  }
+}
+
+fixOldReports();
 loadSafetyTips();
 loadEmergencyContacts();
-loadIncidentsFromFirebase();
+renderDashboard();
